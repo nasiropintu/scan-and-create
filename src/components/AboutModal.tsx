@@ -189,9 +189,8 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
         <div className="about-guarantee">
           <ShieldCheck size={17} />
           <span>
-            <strong>Privacy-first by design.</strong> This preview includes no analytics
-            or tracking. On-device scanning and generation are planned product
-            requirements.
+            <strong>Privacy-first by design.</strong> 100% client-side processing with
+            zero tracking or cloud dependencies. Your data stays in this browser.
           </span>
         </div>
         <p className="about-statement">

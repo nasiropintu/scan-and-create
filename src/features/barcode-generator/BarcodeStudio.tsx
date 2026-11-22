@@ -127,7 +127,9 @@ export default function BarcodeStudio() {
       )
       downloadBlob(png, `scan-and-create-${format.toLowerCase()}.png`)
     } catch {
-      // PNG conversion can be unavailable in restricted browsers; SVG remains available.
+      setSaveMessage(
+        'PNG export is unavailable in this browser. Please download SVG instead.',
+      )
     } finally {
       URL.revokeObjectURL(imageUrl)
     }

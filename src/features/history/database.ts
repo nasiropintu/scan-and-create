@@ -49,3 +49,24 @@ export async function clearHistoryItems() {
 export async function setHistoryFavorite(id: number, favorite: boolean) {
   await database.items.update(id, { favorite })
 }
+
+export type DashboardStats = {
+  totalScans: number
+  qrCreations: number
+  barcodesCreated: number
+  savedFavorites: number
+}
+
+export async function getDashboardStats(): Promise<DashboardStats> {
+  const items = await database.items.toArray()
+  return {
+    totalScans: items.filter((item) => item.kind === 'scan').length,
+    qrCreations: items.filter((item) => item.kind === 'qr').length,
+    barcodesCreated: items.filter((item) => item.kind === 'barcode').length,
+    savedFavorites: items.filter((item) => item.favorite).length,
+  }
+}
+
+export async function getRecentItems(limit = 4): Promise<HistoryItem[]> {
+  return database.items.orderBy('createdAt').reverse().limit(limit).toArray()
+}

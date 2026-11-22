@@ -595,6 +595,78 @@ button:focus-visible {
   font-weight: 650;
 }
 
+.dashboard-recent-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.dashboard-recent-card {
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.dashboard-recent-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.dashboard-recent-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.dashboard-recent-header time {
+  margin-left: auto;
+}
+
+.recent-kind-pill {
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.recent-kind-pill.kind-scan {
+  background: color-mix(in srgb, #32b985 12%, var(--surface));
+  color: #20865f;
+}
+
+.recent-kind-pill.kind-qr {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.recent-kind-pill.kind-barcode {
+  background: color-mix(in srgb, #e67e22 12%, var(--surface));
+  color: #d35400;
+}
+
+.dashboard-recent-value {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
 .empty-state {
   display: flex;
   min-height: 205px;

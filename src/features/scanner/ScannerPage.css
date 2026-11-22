@@ -308,6 +308,84 @@
   cursor: wait;
 }
 
+.scanner-smart-container {
+  margin: 14px 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.scanner-smart-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 650;
+  width: fit-content;
+}
+
+.scanner-smart-box {
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.scanner-smart-url {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 12px;
+  word-break: break-all;
+  text-decoration: none;
+}
+
+.scanner-smart-url:hover {
+  text-decoration: underline;
+}
+
+.scanner-wifi-row,
+.scanner-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.scanner-action-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 16px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 650;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.scanner-action-link:hover {
+  background: var(--accent-hover);
+}
+
+.scanner-result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
 .scanner-error,
 .scanner-status {
   display: flex;

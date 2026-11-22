@@ -11,6 +11,7 @@ import {
   History,
   Heart,
   Home,
+  Laptop,
   Moon,
   Plus,
   QrCode,
@@ -25,7 +26,14 @@ import {
 import QRStudio from './features/qr-generator/QRStudio'
 import BarcodeStudio from './features/barcode-generator/BarcodeStudio'
 import HistoryPage from './features/history/HistoryPage'
+import SettingsPage, { type ThemePreference } from './features/settings/SettingsPage'
 import PWAUpdatePrompt from './components/PWAUpdatePrompt'
+import {
+  getDashboardStats,
+  getRecentItems,
+  type DashboardStats,
+  type HistoryItem,
+} from './features/history/database'
 
 const ScannerPage = lazy(() => import('./features/scanner/ScannerPage'))
 
@@ -33,14 +41,14 @@ type Page =
   'dashboard' | 'scanner' | 'qr' | 'barcode' | 'history' | 'favorites' | 'settings'
 
 const navigation = [
-  { id: 'dashboard', label: 'Dashboard', icon: Home },
-  { id: 'scanner', label: 'Scan code', icon: ScanLine },
-  { id: 'qr', label: 'QR Studio', icon: QrCode },
-  { id: 'barcode', label: 'Barcode Studio', icon: Barcode },
+  { id: 'dashboard', label: 'Dashboard', icon: Home, shortcut: '⌘ 0' },
+  { id: 'scanner', label: 'Scan code', icon: ScanLine, shortcut: '⌘ 1' },
+  { id: 'qr', label: 'QR Studio', icon: QrCode, shortcut: '⌘ 2' },
+  { id: 'barcode', label: 'Barcode Studio', icon: Barcode, shortcut: '⌘ 3' },
 ]
 
 const libraryNavigation = [
-  { id: 'history', label: 'History', icon: History },
+  { id: 'history', label: 'History', icon: History, shortcut: '⌘ 4' },
   { id: 'favorites', label: 'Favorites', icon: Star },
 ]
 
@@ -57,18 +65,106 @@ const pageTitles: Record<Page, string> = {
 function App() {
   const [page, setPage] = useState<Page>('dashboard')
   const [isAboutOpen, setIsAboutOpen] = useState(false)
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+  const [theme, setTheme] = useState<ThemePreference>(() => {
     const saved = localStorage.getItem('scan-create-theme')
-    return saved === 'dark' ? 'dark' : 'light'
+    if (saved === 'dark' || saved === 'light' || saved === 'system') {
+      return saved
+    }
+    return 'system'
   })
 
+  const [stats, setStats] = useState<DashboardStats>({
+    totalScans: 0,
+    qrCreations: 0,
+    barcodesCreated: 0,
+    savedFavorites: 0,
+  })
+  const [recentItems, setRecentItems] = useState<HistoryItem[]>([])
+
+  // Refresh dashboard metrics when navigating to dashboard
   useEffect(() => {
-    document.documentElement.dataset.theme = theme
+    if (page === 'dashboard') {
+      let isCurrent = true
+      Promise.all([getDashboardStats(), getRecentItems(4)])
+        .then(([loadedStats, loadedRecent]) => {
+          if (isCurrent) {
+            setStats(loadedStats)
+            setRecentItems(loadedRecent)
+          }
+        })
+        .catch(() => {
+          // Storage temporarily inaccessible
+        })
+      return () => {
+        isCurrent = false
+      }
+    }
+  }, [page])
+
+  // System and manual theme handling
+  useEffect(() => {
     localStorage.setItem('scan-create-theme', theme)
+
+    if (theme === 'system') {
+      const media = window.matchMedia('(prefers-color-scheme: dark)')
+      const applySystemTheme = () => {
+        document.documentElement.dataset.theme = media.matches ? 'dark' : 'light'
+      }
+      applySystemTheme()
+      media.addEventListener('change', applySystemTheme)
+      return () => media.removeEventListener('change', applySystemTheme)
+    } else {
+      document.documentElement.dataset.theme = theme
+    }
   }, [theme])
+
+  // Global keyboard shortcuts (Cmd/Ctrl + 1..4, Cmd/Ctrl + 0)
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null
+      if (
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable)
+      ) {
+        return
+      }
+
+      if (event.metaKey || event.ctrlKey) {
+        if (event.key === '0') {
+          event.preventDefault()
+          setPage('dashboard')
+        } else if (event.key === '1') {
+          event.preventDefault()
+          setPage('scanner')
+        } else if (event.key === '2') {
+          event.preventDefault()
+          setPage('qr')
+        } else if (event.key === '3') {
+          event.preventDefault()
+          setPage('barcode')
+        } else if (event.key === '4') {
+          event.preventDefault()
+          setPage('history')
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   const navigate = (destination: string) => {
     setPage(destination as Page)
+  }
+
+  const cycleTheme = () => {
+    setTheme((current) => {
+      if (current === 'light') return 'dark'
+      if (current === 'dark') return 'system'
+      return 'light'
+    })
   }
 
   const isDashboard = page === 'dashboard'
@@ -93,7 +189,7 @@ function App() {
         <div className="sidebar-label">WORKSPACE</div>
 
         <nav className="nav-group" aria-label="Main navigation">
-          {navigation.map(({ id, label, icon: Icon }) => (
+          {navigation.map(({ id, label, icon: Icon, shortcut }) => (
             <button
               key={id}
               className={`nav-item ${page === id ? 'active' : ''}`}
@@ -102,7 +198,7 @@ function App() {
             >
               <Icon size={19} strokeWidth={1.8} />
               <span>{label}</span>
-              {id === 'scanner' && <span className="nav-shortcut">⌘ 1</span>}
+              {shortcut && <span className="nav-shortcut">{shortcut}</span>}
             </button>
           ))}
         </nav>
@@ -110,7 +206,7 @@ function App() {
         <div className="sidebar-label library-label">YOUR LIBRARY</div>
 
         <nav className="nav-group" aria-label="Library navigation">
-          {libraryNavigation.map(({ id, label, icon: Icon }) => (
+          {libraryNavigation.map(({ id, label, icon: Icon, shortcut }) => (
             <button
               key={id}
               className={`nav-item ${page === id ? 'active' : ''}`}
@@ -119,6 +215,7 @@ function App() {
             >
               <Icon size={19} strokeWidth={1.8} />
               <span>{label}</span>
+              {shortcut && <span className="nav-shortcut">{shortcut}</span>}
             </button>
           ))}
         </nav>
@@ -129,7 +226,10 @@ function App() {
               <ShieldCheck size={19} />
             </span>
             <strong>Your privacy matters</strong>
-            <p>No accounts or tracking. Core features are in progress.</p>
+            <p>
+              No accounts, tracking, or cloud servers. All processing stays on your
+              device.
+            </p>
             <span className="privacy-status">
               <span className="status-dot" />
               Privacy-first
@@ -158,7 +258,7 @@ function App() {
 
           <div className="sidebar-footer">
             <span className="footer-dot" />
-            Version 0.1.0 · Preview
+            Version 0.1.0 · PWA Preview
           </div>
         </div>
       </aside>
@@ -179,13 +279,17 @@ function App() {
 
             <button
               className="icon-button theme-button"
-              onClick={() =>
-                setTheme((current) => (current === 'light' ? 'dark' : 'light'))
-              }
-              aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
-              title="Toggle theme"
+              onClick={cycleTheme}
+              aria-label={`Current theme: ${theme}. Click to switch theme`}
+              title={`Current theme: ${theme} (Click to toggle)`}
             >
-              {theme === 'light' ? <Moon size={19} /> : <Sun size={19} />}
+              {theme === 'light' ? (
+                <Sun size={19} />
+              ) : theme === 'dark' ? (
+                <Moon size={19} />
+              ) : (
+                <Laptop size={19} />
+              )}
             </button>
 
             <div className="avatar" aria-label="Scan & Create">
@@ -209,6 +313,12 @@ function App() {
             <HistoryPage />
           ) : page === 'favorites' ? (
             <HistoryPage favoritesOnly />
+          ) : page === 'settings' ? (
+            <SettingsPage
+              theme={theme}
+              onThemeChange={setTheme}
+              onOpenAbout={() => setIsAboutOpen(true)}
+            />
           ) : isDashboard ? (
             <>
               <section className="welcome-section">
@@ -278,7 +388,7 @@ function App() {
                 <div className="section-heading">
                   <div>
                     <h2>Your overview</h2>
-                    <p>A little snapshot of your workspace.</p>
+                    <p>A live snapshot of your local storage.</p>
                   </div>
                 </div>
 
@@ -288,8 +398,12 @@ function App() {
                       <Activity size={19} />
                     </span>
                     <span className="stat-label">Total scans</span>
-                    <strong className="stat-number">0</strong>
-                    <span className="stat-caption">Ready for your first scan</span>
+                    <strong className="stat-number">{stats.totalScans}</strong>
+                    <span className="stat-caption">
+                      {stats.totalScans > 0
+                        ? `${stats.totalScans} codes scanned`
+                        : 'Ready for your first scan'}
+                    </span>
                   </div>
 
                   <div className="stat-card">
@@ -297,8 +411,12 @@ function App() {
                       <QrCode size={19} />
                     </span>
                     <span className="stat-label">QR creations</span>
-                    <strong className="stat-number">0</strong>
-                    <span className="stat-caption">Bring your ideas to life</span>
+                    <strong className="stat-number">{stats.qrCreations}</strong>
+                    <span className="stat-caption">
+                      {stats.qrCreations > 0
+                        ? `${stats.qrCreations} codes created`
+                        : 'Bring your ideas to life'}
+                    </span>
                   </div>
 
                   <div className="stat-card">
@@ -306,8 +424,12 @@ function App() {
                       <Barcode size={19} />
                     </span>
                     <span className="stat-label">Barcodes created</span>
-                    <strong className="stat-number">0</strong>
-                    <span className="stat-caption">Ready when you are</span>
+                    <strong className="stat-number">{stats.barcodesCreated}</strong>
+                    <span className="stat-caption">
+                      {stats.barcodesCreated > 0
+                        ? `${stats.barcodesCreated} barcodes created`
+                        : 'Ready when you are'}
+                    </span>
                   </div>
 
                   <div className="stat-card">
@@ -315,8 +437,12 @@ function App() {
                       <Star size={19} />
                     </span>
                     <span className="stat-label">Saved favorites</span>
-                    <strong className="stat-number">0</strong>
-                    <span className="stat-caption">Keep important codes close</span>
+                    <strong className="stat-number">{stats.savedFavorites}</strong>
+                    <span className="stat-caption">
+                      {stats.savedFavorites > 0
+                        ? `${stats.savedFavorites} bookmarked`
+                        : 'Keep important codes close'}
+                    </span>
                   </div>
                 </div>
               </section>
@@ -325,27 +451,60 @@ function App() {
                 <div className="section-heading recent-heading">
                   <div>
                     <h2>Recent activity</h2>
-                    <p>Your latest scans and creations will appear here.</p>
+                    <p>Your latest scans and creations from local storage.</p>
                   </div>
                   <button className="text-button" onClick={() => navigate('history')}>
                     View history <ArrowRight size={15} />
                   </button>
                 </div>
 
-                <div className="empty-state">
-                  <div className="empty-icon">
-                    <Clock3 size={25} strokeWidth={1.5} />
+                {recentItems.length > 0 ? (
+                  <div className="dashboard-recent-list">
+                    {recentItems.map((item) => (
+                      <article
+                        key={item.id}
+                        className="dashboard-recent-card"
+                        onClick={() => navigate('history')}
+                        title="View in history"
+                      >
+                        <div className="dashboard-recent-header">
+                          <span className={`recent-kind-pill kind-${item.kind}`}>
+                            {item.kind === 'scan'
+                              ? 'Scan'
+                              : item.kind === 'qr'
+                                ? 'QR'
+                                : 'Barcode'}
+                          </span>
+                          <span className="recent-format">{item.format}</span>
+                          <time dateTime={new Date(item.createdAt).toISOString()}>
+                            {new Intl.DateTimeFormat(undefined, {
+                              month: 'short',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            }).format(item.createdAt)}
+                          </time>
+                        </div>
+                        <p className="dashboard-recent-value">{item.value}</p>
+                      </article>
+                    ))}
                   </div>
-                  <strong>Nothing here just yet</strong>
-                  <p>
-                    Your activity will appear here once you scan or create your first
-                    code.
-                  </p>
-                  <button className="empty-action" onClick={() => navigate('scanner')}>
-                    <Camera size={16} />
-                    Start scanning
-                  </button>
-                </div>
+                ) : (
+                  <div className="empty-state">
+                    <div className="empty-icon">
+                      <Clock3 size={25} strokeWidth={1.5} />
+                    </div>
+                    <strong>Nothing here just yet</strong>
+                    <p>
+                      Your activity will appear here once you scan or create your first
+                      code.
+                    </p>
+                    <button className="empty-action" onClick={() => navigate('scanner')}>
+                      <Camera size={16} />
+                      Start scanning
+                    </button>
+                  </div>
+                )}
               </section>
 
               <footer className="page-footer">
@@ -358,7 +517,7 @@ function App() {
           ) : (
             <section className="placeholder-page">
               <div className="placeholder-icon">
-                {page === 'settings' && <Settings size={32} />}
+                <Zap size={32} />
               </div>
               <div className="eyebrow">
                 <Zap size={14} /> DEVELOPMENT IN PROGRESS

@@ -1,14 +1,23 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   AlertCircle,
   Bookmark,
   Camera,
   Check,
   Copy,
+  ExternalLink,
+  FileText,
+  Globe,
   ImageUp,
+  Mail,
+  MessageSquare,
+  PhoneCall,
   ScanLine,
+  Share2,
   ShieldCheck,
   Square,
+  User,
+  Wifi,
 } from 'lucide-react'
 import {
   decodeImageFile,
@@ -19,6 +28,7 @@ import {
 } from './scannerAdapter'
 import './ScannerPage.css'
 import { saveHistoryItem } from '../history/database'
+import { classifyContent } from '../results/contentClassifier'
 
 type CameraOption = { deviceId: string; label: string }
 
@@ -113,11 +123,29 @@ export default function ScannerPage() {
 
   const copyResult = async () => {
     if (!result) return
+    await copyText(result.text, 'Result copied.')
+  }
+
+  const copyText = async (text: string, successMessage = 'Copied.') => {
     try {
-      await navigator.clipboard.writeText(result.text)
-      setStatus('Result copied.')
+      await navigator.clipboard.writeText(text)
+      setStatus(successMessage)
     } catch {
       setStatus('Clipboard access is unavailable in this browser.')
+    }
+  }
+
+  const shareResult = async () => {
+    if (!result || !navigator.share) return
+    try {
+      await navigator.share({
+        title: 'Scan & Create',
+        text: result.text,
+      })
+      setStatus('Shared successfully.')
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') return
+      setStatus('Sharing cancelled.')
     }
   }
 
@@ -130,6 +158,11 @@ export default function ScannerPage() {
       setScanError('Could not save this result. Check your browser storage settings.')
     }
   }
+
+  const classified = useMemo(
+    () => (result ? classifyContent(result.text) : null),
+    [result],
+  )
 
   return (
     <section className="scanner-page" aria-labelledby="scanner-title">
@@ -214,25 +247,180 @@ export default function ScannerPage() {
             </div>
             {result && <span className="scanner-result-format">{result.format}</span>}
           </div>
-          {result ? (
+          {result && classified ? (
             <>
+              <div className="scanner-smart-container">
+                {classified.type === 'url' && (
+                  <>
+                    <span className="scanner-smart-badge">
+                      <Globe size={12} /> Website Link
+                    </span>
+                    <div className="scanner-smart-box">
+                      <a
+                        className="scanner-smart-url"
+                        href={classified.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {classified.display}
+                      </a>
+                    </div>
+                    <a
+                      className="scanner-action-link"
+                      href={classified.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLink size={15} /> Open website
+                    </a>
+                  </>
+                )}
+
+                {classified.type === 'email' && (
+                  <>
+                    <span className="scanner-smart-badge">
+                      <Mail size={12} /> Email Address
+                    </span>
+                    <div className="scanner-smart-box">
+                      <strong>{classified.email}</strong>
+                      {classified.subject && <small>Subject: {classified.subject}</small>}
+                    </div>
+                    <a className="scanner-action-link" href={classified.href}>
+                      <Mail size={15} /> Compose email
+                    </a>
+                  </>
+                )}
+
+                {classified.type === 'phone' && (
+                  <>
+                    <span className="scanner-smart-badge">
+                      <PhoneCall size={12} /> Phone Number
+                    </span>
+                    <div className="scanner-smart-box">
+                      <strong>{classified.phone}</strong>
+                    </div>
+                    <a className="scanner-action-link" href={classified.href}>
+                      <PhoneCall size={15} /> Call number
+                    </a>
+                  </>
+                )}
+
+                {classified.type === 'sms' && (
+                  <>
+                    <span className="scanner-smart-badge">
+                      <MessageSquare size={12} /> SMS Message
+                    </span>
+                    <div className="scanner-smart-box">
+                      <strong>To: {classified.phone}</strong>
+                      {classified.message && <small>Message: {classified.message}</small>}
+                    </div>
+                    <a className="scanner-action-link" href={classified.href}>
+                      <MessageSquare size={15} /> Send message
+                    </a>
+                  </>
+                )}
+
+                {classified.type === 'wifi' && (
+                  <>
+                    <span className="scanner-smart-badge">
+                      <Wifi size={12} /> Wi-Fi Network
+                    </span>
+                    <div className="scanner-smart-box">
+                      <div className="scanner-wifi-row">
+                        <span>Network:</span>
+                        <strong>{classified.ssid}</strong>
+                      </div>
+                      <div className="scanner-wifi-row">
+                        <span>Security:</span>
+                        <span>{classified.security}</span>
+                      </div>
+                      {classified.password && (
+                        <div className="scanner-wifi-row">
+                          <span>Password:</span>
+                          <code>{classified.password}</code>
+                        </div>
+                      )}
+                    </div>
+                    {classified.password && (
+                      <button
+                        className="scanner-secondary-button"
+                        type="button"
+                        onClick={() =>
+                          void copyText(classified.password!, 'Wi-Fi password copied.')
+                        }
+                      >
+                        <Copy size={15} /> Copy password
+                      </button>
+                    )}
+                  </>
+                )}
+
+                {classified.type === 'contact' && (
+                  <>
+                    <span className="scanner-smart-badge">
+                      <User size={12} /> Contact Card
+                    </span>
+                    <div className="scanner-smart-box">
+                      <strong>{classified.name}</strong>
+                      {classified.org && <small>{classified.org}</small>}
+                      {classified.title && <small>{classified.title}</small>}
+                      {classified.phone && (
+                        <div className="scanner-contact-row">
+                          <span>Phone:</span>
+                          <strong>{classified.phone}</strong>
+                        </div>
+                      )}
+                      {classified.email && (
+                        <div className="scanner-contact-row">
+                          <span>Email:</span>
+                          <strong>{classified.email}</strong>
+                        </div>
+                      )}
+                    </div>
+                    {classified.phone && (
+                      <a className="scanner-action-link" href={`tel:${classified.phone}`}>
+                        <PhoneCall size={15} /> Call {classified.name}
+                      </a>
+                    )}
+                  </>
+                )}
+
+                {classified.type === 'text' && (
+                  <span className="scanner-smart-badge">
+                    <FileText size={12} /> Plain Text
+                  </span>
+                )}
+              </div>
+
               <pre className="scanner-result-value">{result.text}</pre>
-              <button
-                className="scanner-secondary-button"
-                type="button"
-                onClick={copyResult}
-              >
-                <Copy size={15} /> Copy result
-              </button>
-              <button
-                className="scanner-secondary-button"
-                type="button"
-                onClick={() => void saveResult()}
-              >
-                <Bookmark size={15} /> Save to history
-              </button>
+              <div className="scanner-result-actions">
+                <button
+                  className="scanner-secondary-button"
+                  type="button"
+                  onClick={copyResult}
+                >
+                  <Copy size={15} /> Copy raw text
+                </button>
+                {typeof navigator !== 'undefined' && 'share' in navigator && (
+                  <button
+                    className="scanner-secondary-button"
+                    type="button"
+                    onClick={() => void shareResult()}
+                  >
+                    <Share2 size={15} /> Share
+                  </button>
+                )}
+                <button
+                  className="scanner-secondary-button"
+                  type="button"
+                  onClick={() => void saveResult()}
+                >
+                  <Bookmark size={15} /> Save to history
+                </button>
+              </div>
               <p className="scanner-safe-note">
-                Scanned content is shown as text. Links are never opened automatically.
+                Scanned content is shown safely. External links and device actions are
+                only triggered when you click them.
               </p>
             </>
           ) : (
