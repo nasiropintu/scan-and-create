@@ -547,9 +547,10 @@ Current brand identity (verified against the application)
 - Typography: Inter first, with system sans-serif fallbacks. Avoid requiring a remote font for offline use.
 - Icons: Lucide React, used with consistent stroke weight and size.
 - Creator: NasirPintu (Mohammad Nasiruddin Pintu), Creator & Product Architect. README/About credits and social handles are attribution content, not product feature claims.
+- Creator portrait: a creator-supplied 400 × 400 JPEG is stored at `public/branding/nasirpintu.jpg` for approved creator attribution and About materials; the app currently keeps its initials treatment. Usage guidance is in `docs/BRANDING_KIT.md`.
 - English UI exists; Bangla is planned, not implemented. Light/dark themes exist; system-following mode is planned.
 
-Accuracy fixes applied in this update: replaced the unsupported “Offline-ready” label with “No tracking”; clarified that core features are in progress; removed the unavailable portrait dependency and use the creator initials; scoped the About privacy statement to what is actually in this preview; replaced the mismatched lightning favicon with the app's scan-frame mark and linked it using Vite's base URL token. Prepare correctly sized PWA icons during the PWA phase. Avoid implying accounts or signed-in profiles. Do not imply scanning or generation is available while screens remain placeholders. Privacy-first local processing is a product requirement, not proof that those features have shipped.
+Accuracy fixes applied in this update: replaced the unsupported “Offline-ready” label with “No tracking”; clarified that core features are in progress; kept the initials treatment instead of the previously unavailable portrait and added the creator-supplied image as an approved local brand asset; scoped the About privacy statement to what is actually in this preview; replaced the mismatched lightning favicon with the app's scan-frame mark and linked it using Vite's base URL token. Prepare correctly sized PWA icons during the PWA phase. Avoid implying accounts or signed-in profiles. Do not imply scanning or generation is available while screens remain placeholders. Privacy-first local processing is a product requirement, not proof that those features have shipped.
 
 ---
 
