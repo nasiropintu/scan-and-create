@@ -1,0 +1,76 @@
+.pwa-notice {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 50;
+  display: flex;
+  max-width: min(470px, calc(100vw - 36px));
+  align-items: center;
+  gap: 11px;
+  padding: 13px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: 0 14px 40px rgb(20 18 38 / 18%);
+}
+
+.pwa-notice-icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.pwa-notice-message {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 3px;
+  color: var(--text);
+  font-size: 11px;
+}
+
+.pwa-notice-message small {
+  color: var(--text-secondary);
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.pwa-notice-action,
+.pwa-notice-close {
+  display: grid;
+  min-width: 34px;
+  min-height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.pwa-notice-action {
+  padding: 0 11px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.pwa-notice-close {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 700px) {
+  .pwa-notice {
+    right: 12px;
+    bottom: calc(84px + env(safe-area-inset-bottom));
+    left: 12px;
+    max-width: none;
+  }
+}

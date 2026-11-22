@@ -550,7 +550,7 @@ Current brand identity (verified against the application)
 - Creator portrait: a creator-supplied 400 × 400 JPEG is stored at `public/branding/nasirpintu.jpg` for approved creator attribution and About materials; the app currently keeps its initials treatment. Usage guidance is in `docs/BRANDING_KIT.md`.
 - English UI exists; Bangla is planned, not implemented. Light/dark themes exist; system-following mode is planned.
 
-Accuracy fixes applied in this update: replaced the unsupported “Offline-ready” label with “No tracking”; clarified that core features are in progress; kept the initials treatment instead of the previously unavailable portrait and added the creator-supplied image as an approved local brand asset; scoped the About privacy statement to what is actually in this preview; replaced the mismatched lightning favicon with the app's scan-frame mark and linked it using Vite's base URL token. Prepare correctly sized PWA icons during the PWA phase. Avoid implying accounts or signed-in profiles. Do not imply scanning or generation is available while screens remain placeholders. Privacy-first local processing is a product requirement, not proof that those features have shipped.
+Accuracy fixes applied in earlier updates: replaced the unsupported “Offline-ready” label with an accurate no-tracking statement; added the creator-supplied portrait as an approved local brand asset; scoped privacy statements to implemented behavior; and replaced the mismatched favicon with the scan-frame mark. This update adds the PWA manifest, generated product icons, static asset service worker, and user-controlled update prompt. Install and offline startup still require manual device/browser acceptance. Avoid implying accounts or signed-in profiles. Do not imply a capability is verified solely because it is configured.
 
 ---
 
@@ -777,14 +777,14 @@ miscellaneous dumping ground.
     Phase 6 --- PWA and offline support
     Estimated effort: 2--3 days
     Tasks:
-    Add `vite-plugin-pwa`.
-    Configure manifest and icons.
-    Configure service worker and Workbox caching.
-    Cache app shell and static assets.
-    Exclude private/user-generated data from service-worker caching.
-    Test install flow on supported browsers.
-    Test offline startup after first successful load.
-    Add update handling.
+    [x] Add `vite-plugin-pwa` and Workbox support.
+    [x] Configure manifest, app icons, and install metadata.
+    [x] Configure service worker and Workbox precaching of static build assets.
+    [x] Keep user-generated history in IndexedDB, outside the service-worker asset cache.
+    [x] Add a dismissible offline-ready notice and user-controlled update prompt.
+    [ ] Test install flow on supported browsers.
+    [ ] Test offline startup after first successful load.
+    [ ] Verify updates preserve saved local records.
     Acceptance criteria
     Production build includes the expected PWA assets.
     App can be installed where supported.
@@ -1010,6 +1010,8 @@ Next actions:
 - [x] Implement camera scanning with native detection, local ZXing fallback, camera selection, image upload decoding, stream cleanup, and safe result display.
 - [x] Add versioned Dexie/IndexedDB history for user-saved scans and generated QR/barcodes, with search/filter, favorites, copy, explicit website opening, delete, and clear-all.
 - [x] Deploy the site to GitHub Pages (user confirmed live).
+- [x] Configure PWA manifest, install metadata, generated product icons, static asset precaching, and a user-controlled update prompt.
+- [ ] Verify installation, offline startup, and update behavior on Android and desktop browsers before describing the PWA as accepted.
 - [ ] Verify saved-item persistence and history/favorites actions after browser reload.
 - [ ] Verify camera and image scanning on Android and desktop, including denied permissions and camera cleanup.
 - [ ] Verify generated QR images with independent scanner apps and on Android.
@@ -1033,25 +1035,25 @@ npm run preview
 
 17. Decisions Register
 
-| Decision                   | Current choice                                             | Status                                                                                    |
-| -------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| Product name               | Scan & Create                                              | Selected; exact spelling                                                                  |
-| Brand direction            | Premium Minimal; purple-led                                | In use; see Section 8                                                                     |
-| Platform                   | Responsive React PWA                                       | PWA not implemented                                                                       |
-| UI framework               | React 19 + TypeScript + Vite                               | Scaffolded; dashboard exists                                                              |
-| Styling                    | Tailwind CSS 4 plugin plus authored CSS tokens             | Installed and in use                                                                      |
-| Icons                      | Lucide React                                               | Installed and in use                                                                      |
-| Lint/format                | Oxlint and Prettier                                        | Configured; lint and format checks pass                                                   |
-| Repository                 | `nasiropintu/scan-and-create`                              | Public; `main` pushed                                                                     |
-| Hosting                    | GitHub Pages                                               | Live; user confirmed deployment                                                           |
-| Backend/accounts/analytics | None in MVP                                                | Selected exclusions                                                                       |
-| Local database             | IndexedDB through Dexie                                    | Schema v1 and user-controlled history/favorites implemented; browser verification pending |
-| QR/barcode libraries       | `qrcode` and `JsBarcode` installed                         | Both generators implemented; physical scanner verification pending                        |
-| Scanner                    | Native `BarcodeDetector` plus local ZXing browser fallback | Implemented; device acceptance checks pending                                             |
-| Languages                  | English and Bangla                                         | Planned; no translation system or selector                                                |
-| Themes                     | Light and dark                                             | Tokens and toggle exist; system mode planned                                              |
-| Offline/PWA                | Manifest, icons, service worker                            | Planned; do not claim offline-ready                                                       |
-| Creator identity           | NasirPintu (Mohammad Nasiruddin Pintu)                     | Verified in README and About dialog                                                       |
+| Decision                   | Current choice                                                | Status                                                                                           |
+| -------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Product name               | Scan & Create                                                 | Selected; exact spelling                                                                         |
+| Brand direction            | Premium Minimal; purple-led                                   | In use; see Section 8                                                                            |
+| Platform                   | Responsive React PWA                                          | Manifest, product icons, service worker, and update prompt configured; device acceptance pending |
+| UI framework               | React 19 + TypeScript + Vite                                  | Scaffolded; dashboard exists                                                                     |
+| Styling                    | Tailwind CSS 4 plugin plus authored CSS tokens                | Installed and in use                                                                             |
+| Icons                      | Lucide React                                                  | Installed and in use                                                                             |
+| Lint/format                | Oxlint and Prettier                                           | Configured; lint and format checks pass                                                          |
+| Repository                 | `nasiropintu/scan-and-create`                                 | Public; `main` pushed                                                                            |
+| Hosting                    | GitHub Pages                                                  | Live; user confirmed deployment                                                                  |
+| Backend/accounts/analytics | None in MVP                                                   | Selected exclusions                                                                              |
+| Local database             | IndexedDB through Dexie                                       | Schema v1 and user-controlled history/favorites implemented; browser verification pending        |
+| QR/barcode libraries       | `qrcode` and `JsBarcode` installed                            | Both generators implemented; physical scanner verification pending                               |
+| Scanner                    | Native `BarcodeDetector` plus local ZXing browser fallback    | Implemented; device acceptance checks pending                                                    |
+| Languages                  | English and Bangla                                            | Planned; no translation system or selector                                                       |
+| Themes                     | Light and dark                                                | Tokens and toggle exist; system mode planned                                                     |
+| Offline/PWA                | Manifest, icons, Workbox static asset precache, update prompt | Implemented in repository; install and offline acceptance pending                                |
+| Creator identity           | NasirPintu (Mohammad Nasiruddin Pintu)                        | Verified in README and About dialog                                                              |
 
 ---
 
@@ -1074,12 +1076,15 @@ npm run preview
 
 19. Next Milestone
 
-Milestone 5: Scanner and history acceptance
+Phase 6 implementation is complete locally. The next milestone is **PWA acceptance and release hardening**:
 
-1. Verify camera scanning and image-upload decoding on desktop and Android, including denied permission, camera switching, and camera cleanup.
-2. Verify QR and barcode outputs with independent scanner apps.
-3. Verify saved-item persistence, search/filter, favorites, deletion, and clear-all after a browser reload.
-4. Proceed to PWA and offline support after these acceptance checks pass.
+1. Commit and push the PWA configuration and generated assets so GitHub Actions deploys them.
+2. On Android Chrome and desktop Chrome/Edge, install the app where supported and confirm the correct name, icon, and standalone launch.
+3. Load the app online once, then disable network access and verify the app shell and static assets load. Confirm camera scanning is understood to require a usable camera/browser context and that user history remains available from IndexedDB.
+4. Publish a later update and verify the prompt waits for the user's choice and saved local records remain intact.
+5. Complete the remaining scanner, history, generator, accessibility, and responsive manual acceptance checks listed above.
+
+Do not describe offline startup or installation as verified until these checks pass. After acceptance, continue Phase 7 QA, accessibility, and hardening.
 
 ---
 

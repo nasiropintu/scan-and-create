@@ -13,6 +13,7 @@ This document records the current product identity and approved creator portrait
 ## Logo and color
 
 - Use the Scan & Create wordmark with the scan-frame mark. The scan-frame favicon is in [`public/favicon.svg`](../public/favicon.svg).
+- The PWA icon artwork source is [`public/branding/app-icon.svg`](../public/branding/app-icon.svg). Generated install assets are kept in `public/branding/` (64, 192, and 512 px icons, a maskable 512 px icon, an Apple touch icon, and an ICO favicon). Regenerate these with `npm run generate-pwa-assets`; keep the product purple, scan-frame mark, and sufficient safe-zone padding for maskable use.
 - Light theme accent: `#7057E8`; hover: `#5E46D2`; soft accent: `#F0EDFF`.
 - Dark theme accent: `#9B87FF`; hover: `#B0A1FF`; soft accent: `#30294C`.
 - Light canvas: `#F7F7FA`; dark canvas: `#111218`.
@@ -34,5 +35,6 @@ This document records the current product identity and approved creator portrait
 ## Voice and use
 
 - Keep copy clear, warm, and practical. Emphasize privacy only when it accurately describes the feature in use.
-- Do not imply that accounts, cloud sync, analytics, or offline support exist unless implemented and verified.
+- PWA metadata and static asset caching are configured. Do not claim install or offline behavior is verified until manual device/browser acceptance is complete.
+- Do not imply that accounts, cloud sync, or analytics exist.
 - Preserve the exact spelling “Scan & Create” and creator name “NasirPintu.”

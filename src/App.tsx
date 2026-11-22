@@ -25,6 +25,7 @@ import {
 import QRStudio from './features/qr-generator/QRStudio'
 import BarcodeStudio from './features/barcode-generator/BarcodeStudio'
 import HistoryPage from './features/history/HistoryPage'
+import PWAUpdatePrompt from './components/PWAUpdatePrompt'
 
 const ScannerPage = lazy(() => import('./features/scanner/ScannerPage'))
 
@@ -414,6 +415,7 @@ function App() {
       </nav>
 
       <AboutModal isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
+      <PWAUpdatePrompt />
     </div>
   )
 }
