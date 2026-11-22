@@ -46,7 +46,7 @@ Repository snapshot (2026-11-23)
 
 This project has moved beyond the original Vite starter. Repository inspection confirms React 19 + TypeScript + Vite, Tailwind CSS 4 integration, Lucide icons, an application shell and dashboard, light/dark color tokens, responsive desktop/mobile navigation, an About & Credits dialog, and a functional client-side QR Studio. QR Studio builds text, URL, phone, email, SMS, Wi-Fi, and vCard payloads; validates required fields; previews generated QR codes; and supports PNG download, content copy, and browser-supported sharing. The project also has a README, MIT license, favicon, and npm scripts for development, linting, formatting, and production builds.
 
-Barcode generation, camera scanning, result handling, history, favorites, settings, translations, persistence, service worker, manifest, and deployment workflow are not implemented. QR Studio has not yet received independent scanner or Android-device acceptance checks. A local CI workflow now runs lint, formatting, and production build checks on pushes and pull requests targeting `main`, with a manual trigger; it will become active after it is committed and pushed. There is no test script or test file. The initial `main` commit is pushed to the public GitHub repository `https://github.com/nasiropintu/scan-and-create`; GitHub Pages remains a plan, not a deployment. The current Vite config has no GitHub Pages base path. Mark a capability complete only after implementation and acceptance checks exist in the repository.
+Camera scanning, result handling, history, favorites, settings, translations, persistence, service worker, manifest, and deployment workflow are not implemented. Barcode Studio now generates Code 128, EAN-13, EAN-8, UPC-A, UPC-E, Code 39, ITF, and ITF-14 with format-specific validation, SVG/PNG download, and print layout. It preserves entered values and requires valid check digits for the applicable formats. Both studios still need physical scanner acceptance checks. Eleven automated payload and validation tests pass with the Node.js built-in test runner. A local CI workflow runs lint, formatting, tests, and production build checks on pushes and pull requests targeting `main`, with a manual trigger; it will become active after it is committed and pushed. The initial `main` commit is pushed to the public GitHub repository `https://github.com/nasiropintu/scan-and-create`; GitHub Pages remains a plan, not a deployment. The current Vite config has no GitHub Pages base path. Mark a capability complete only after implementation and acceptance checks exist in the repository.
 
 2. Product Goals and Non-Goals
    2.1 Goals
@@ -991,13 +991,17 @@ Next actions:
 - [x] Remove the unavailable portrait dependency and show the existing initials treatment.
 - [x] Replace the mismatched favicon and add the app favicon link.
 - [x] Implement QR Studio payloads, validation, live preview, PNG export, copy, and supported sharing.
-- [x] Add a GitHub Actions CI workflow for lint, format, and production build validation (local; commit and push to activate).
+- [x] Implement Barcode Studio for Code 128, EAN-13/8, UPC-A/E, Code 39, ITF, and ITF-14 with format-specific validation and SVG/PNG/print output.
+- [x] Add a GitHub Actions CI workflow for lint, format, tests, and production build validation (local; commit and push to activate).
 - [ ] Prepare app/PWA icon sizes in the PWA milestone.
 - [x] Production build passes (`npm run build`, 2026-11-23).
 - [x] Run lint and format checks; both pass (`npm run lint`, `npm run format:check`, 2026-11-23).
 - [x] Add the plan and create the initial `main` commit (`6209577`); push to the public GitHub repository.
 - [ ] Finish shared design tokens and accessible UI patterns against the existing shell.
-- [ ] Verify QR output with independent scanner apps and on Android; add automated coverage for payload logic.
+- [x] Add automated tests for QR payload building and validation (6 passing).
+- [x] Add automated barcode format and check-digit validation tests (5 passing).
+- [ ] Verify generated QR images with independent scanner apps and on Android.
+- [ ] Verify generated barcodes with independent scanner apps and on Android.
 - [ ] Implement remaining roadmap milestones; do not describe placeholders as working features.
 - [ ] Configure the GitHub Pages base path and deployment after PWA work and release-visibility review.
 
@@ -1006,36 +1010,37 @@ Available PowerShell commands from `D:\Projects\scan-and-create`:
 ```powershell
 npm run dev
 npm run lint
+npm test
 npm run format:check
 npm run build
 npm run preview
 ```
 
-There is currently no test script or test file. Add automated coverage as feature logic is implemented.
+`npm test` runs the QR payload-builder checks with Node's built-in test runner. Expand coverage as feature logic is implemented.
 
 ---
 
 17. Decisions Register
 
-| Decision                   | Current choice                                         | Status                                                  |
-| -------------------------- | ------------------------------------------------------ | ------------------------------------------------------- |
-| Product name               | Scan & Create                                          | Selected; exact spelling                                |
-| Brand direction            | Premium Minimal; purple-led                            | In use; see Section 8                                   |
-| Platform                   | Responsive React PWA                                   | PWA not implemented                                     |
-| UI framework               | React 19 + TypeScript + Vite                           | Scaffolded; dashboard exists                            |
-| Styling                    | Tailwind CSS 4 plugin plus authored CSS tokens         | Installed and in use                                    |
-| Icons                      | Lucide React                                           | Installed and in use                                    |
-| Lint/format                | Oxlint and Prettier                                    | Configured; lint and format checks pass                 |
-| Repository                 | `nasiropintu/scan-and-create`                          | Public; `main` pushed                                   |
-| Hosting                    | GitHub Pages                                           | Planned; base path and deployment unset                 |
-| Backend/accounts/analytics | None in MVP                                            | Selected exclusions                                     |
-| Local database             | IndexedDB; Dexie was proposed                          | Not selected or installed                               |
-| QR/barcode libraries       | `qrcode` installed; `JsBarcode` proposed               | QR generation implemented; scanner verification pending |
-| Scanner                    | Capability detection plus replaceable fallback adapter | Planned; no scanner code                                |
-| Languages                  | English and Bangla                                     | Planned; no translation system or selector              |
-| Themes                     | Light and dark                                         | Tokens and toggle exist; system mode planned            |
-| Offline/PWA                | Manifest, icons, service worker                        | Planned; do not claim offline-ready                     |
-| Creator identity           | NasirPintu (Mohammad Nasiruddin Pintu)                 | Verified in README and About dialog                     |
+| Decision                   | Current choice                                         | Status                                                             |
+| -------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------ |
+| Product name               | Scan & Create                                          | Selected; exact spelling                                           |
+| Brand direction            | Premium Minimal; purple-led                            | In use; see Section 8                                              |
+| Platform                   | Responsive React PWA                                   | PWA not implemented                                                |
+| UI framework               | React 19 + TypeScript + Vite                           | Scaffolded; dashboard exists                                       |
+| Styling                    | Tailwind CSS 4 plugin plus authored CSS tokens         | Installed and in use                                               |
+| Icons                      | Lucide React                                           | Installed and in use                                               |
+| Lint/format                | Oxlint and Prettier                                    | Configured; lint and format checks pass                            |
+| Repository                 | `nasiropintu/scan-and-create`                          | Public; `main` pushed                                              |
+| Hosting                    | GitHub Pages                                           | Planned; base path and deployment unset                            |
+| Backend/accounts/analytics | None in MVP                                            | Selected exclusions                                                |
+| Local database             | IndexedDB; Dexie was proposed                          | Not selected or installed                                          |
+| QR/barcode libraries       | `qrcode` and `JsBarcode` installed                     | Both generators implemented; physical scanner verification pending |
+| Scanner                    | Capability detection plus replaceable fallback adapter | Planned; no scanner code                                           |
+| Languages                  | English and Bangla                                     | Planned; no translation system or selector                         |
+| Themes                     | Light and dark                                         | Tokens and toggle exist; system mode planned                       |
+| Offline/PWA                | Manifest, icons, service worker                        | Planned; do not claim offline-ready                                |
+| Creator identity           | NasirPintu (Mohammad Nasiruddin Pintu)                 | Verified in README and About dialog                                |
 
 ---
 
@@ -1058,11 +1063,12 @@ There is currently no test script or test file. Add automated coverage as featur
 
 19. Next Milestone
 
-Milestone 2: QR Studio verification and Barcode Studio
+Milestone 2: QR and barcode scanner verification
 
-1. Verify QR outputs with independent scanner apps and an Android device; add automated payload-builder coverage.
-2. Implement Barcode Studio with format-specific validation and downloadable output.
-3. Configure Pages only after PWA work and a public-release readiness review.
+1. Verify QR and barcode outputs with independent scanner apps and an Android device.
+2. Fix any scan reliability issues found during manual verification.
+3. Proceed to scanner engine work after generated code formats pass acceptance checks.
+4. Configure Pages only after PWA work and a public-release readiness review.
 
 ---
 
