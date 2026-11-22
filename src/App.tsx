@@ -22,6 +22,7 @@ import {
   Sun,
   Zap,
 } from 'lucide-react'
+import QRStudio from './features/qr-generator/QRStudio'
 
 type Page =
   'dashboard' | 'scanner' | 'qr' | 'barcode' | 'history' | 'favorites' | 'settings'
@@ -189,7 +190,9 @@ function App() {
         </header>
 
         <div className="page-content">
-          {isDashboard ? (
+          {page === 'qr' ? (
+            <QRStudio />
+          ) : isDashboard ? (
             <>
               <section className="welcome-section">
                 <div>
@@ -339,7 +342,6 @@ function App() {
             <section className="placeholder-page">
               <div className="placeholder-icon">
                 {page === 'scanner' && <ScanLine size={32} />}
-                {page === 'qr' && <QrCode size={32} />}
                 {page === 'barcode' && <Barcode size={32} />}
                 {page === 'history' && <History size={32} />}
                 {page === 'favorites' && <Star size={32} />}
