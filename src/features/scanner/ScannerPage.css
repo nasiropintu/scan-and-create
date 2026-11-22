@@ -1,0 +1,359 @@
+.scanner-page {
+  padding-bottom: 36px;
+}
+
+.scanner-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.scanner-heading h1 {
+  margin: 12px 0 6px;
+  font-size: clamp(24px, 3vw, 31px);
+  letter-spacing: -1px;
+}
+
+.scanner-heading p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.scanner-privacy-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border: 1px solid color-mix(in srgb, #32b985 30%, var(--border));
+  border-radius: 9px;
+  background: color-mix(in srgb, #32b985 7%, var(--surface));
+  color: var(--text-secondary);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.scanner-privacy-note svg {
+  color: #32a879;
+}
+
+.scanner-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  align-items: start;
+  gap: 18px;
+}
+
+.scanner-preview-card,
+.scanner-result-card {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.scanner-video-frame {
+  position: relative;
+  display: grid;
+  min-height: 310px;
+  overflow: hidden;
+  place-items: center;
+  border-radius: 10px;
+  background: #111218;
+}
+
+.scanner-video-frame.is-active {
+  background: #09090d;
+}
+
+.scanner-video {
+  width: 100%;
+  max-height: min(58vh, 500px);
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.scanner-idle {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  max-width: 280px;
+  padding: 28px;
+  color: #fff;
+  text-align: center;
+}
+
+.scanner-idle strong {
+  font-size: 14px;
+}
+
+.scanner-idle > span:last-child {
+  color: #aaa9bb;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.scanner-idle-icon {
+  display: grid;
+  width: 62px;
+  height: 62px;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 18px;
+  background: rgb(255 255 255 / 7%);
+  color: #b0a1ff;
+}
+
+.scanner-guide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(70%, 300px);
+  height: min(45%, 190px);
+  border: 2px solid #9b87ff;
+  border-radius: 14px;
+  box-shadow: 0 0 0 999px rgb(0 0 0 / 15%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.scanner-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.scanner-primary-button,
+.scanner-stop-button,
+.scanner-secondary-button,
+.scanner-upload-button {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.scanner-primary-button {
+  background: var(--accent);
+  color: #fff;
+}
+
+.scanner-primary-button:hover {
+  background: var(--accent-hover);
+}
+
+.scanner-stop-button {
+  background: color-mix(in srgb, #d84454 13%, var(--surface));
+  color: #c34452;
+}
+
+.scanner-camera-select {
+  display: flex;
+  min-width: 190px;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 10px;
+}
+
+.scanner-camera-select select {
+  min-width: 0;
+  min-height: 38px;
+  flex: 1;
+  padding: 0 9px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface-soft);
+  color: var(--text);
+  font: inherit;
+  font-size: 10px;
+}
+
+.scanner-result-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.scanner-card-eyebrow {
+  color: var(--text-muted);
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+}
+
+.scanner-result-heading h2 {
+  margin: 6px 0 0;
+  font-size: 16px;
+}
+
+.scanner-result-format {
+  padding: 6px 8px;
+  border-radius: 20px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.scanner-result-empty {
+  display: grid;
+  min-height: 170px;
+  align-content: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.scanner-result-empty small {
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.scanner-result-value {
+  max-height: 230px;
+  overflow: auto;
+  margin: 18px 0 12px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  color: var(--text);
+  font:
+    11px/1.6 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.scanner-secondary-button {
+  min-height: 36px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.scanner-safe-note {
+  margin: 10px 0 0;
+  color: var(--text-secondary);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.scanner-image-upload {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 24px;
+  padding-top: 17px;
+  border-top: 1px solid var(--border);
+}
+
+.scanner-upload-copy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 10px;
+}
+
+.scanner-upload-copy svg {
+  color: var(--accent);
+}
+
+.scanner-upload-button {
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.scanner-upload-button input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.scanner-upload-button:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.scanner-upload-button:has(input:disabled) {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.scanner-error,
+.scanner-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin: 14px 0 0;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.scanner-error {
+  color: var(--danger, #c34452);
+}
+
+.scanner-status {
+  color: var(--text-secondary);
+}
+
+.scanner-error svg,
+.scanner-status svg {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+@media (max-width: 850px) {
+  .scanner-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 580px) {
+  .scanner-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .scanner-preview-card,
+  .scanner-result-card {
+    padding: 15px;
+  }
+
+  .scanner-video-frame {
+    min-height: 250px;
+  }
+
+  .scanner-controls > button {
+    flex: 1;
+  }
+}

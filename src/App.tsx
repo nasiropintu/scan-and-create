@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import AboutModal from './components/AboutModal'
 import {
   Activity,
@@ -24,6 +24,8 @@ import {
 } from 'lucide-react'
 import QRStudio from './features/qr-generator/QRStudio'
 import BarcodeStudio from './features/barcode-generator/BarcodeStudio'
+
+const ScannerPage = lazy(() => import('./features/scanner/ScannerPage'))
 
 type Page =
   'dashboard' | 'scanner' | 'qr' | 'barcode' | 'history' | 'favorites' | 'settings'
@@ -195,6 +197,12 @@ function App() {
             <QRStudio />
           ) : page === 'barcode' ? (
             <BarcodeStudio />
+          ) : page === 'scanner' ? (
+            <Suspense
+              fallback={<section className="placeholder-page">Loading scanner…</section>}
+            >
+              <ScannerPage />
+            </Suspense>
           ) : isDashboard ? (
             <>
               <section className="welcome-section">
@@ -344,7 +352,6 @@ function App() {
           ) : (
             <section className="placeholder-page">
               <div className="placeholder-icon">
-                {page === 'scanner' && <ScanLine size={32} />}
                 {page === 'history' && <History size={32} />}
                 {page === 'favorites' && <Star size={32} />}
                 {page === 'settings' && <Settings size={32} />}

@@ -1,6 +1,6 @@
 # Scan & Create
 
-A privacy-first QR and barcode toolkit. The live site includes QR Studio and Barcode Studio; camera scanning, local history, and offline/PWA support are still in development.
+A privacy-first QR and barcode toolkit. The live site includes QR Studio, Barcode Studio, and a camera/image scanner. Local history and offline/PWA support are still in development; scanning needs manual device verification.
 
 ## Project principles
 
@@ -30,7 +30,7 @@ npm run format:check
 
 ## Current status
 
-The application shell, QR Studio, and Barcode Studio are implemented. Camera scanning, local history, and offline/PWA functionality remain planned milestones. QR and barcode outputs still need independent scanner and Android device verification.
+The application shell, QR Studio, Barcode Studio, and scanner implementation are available on the live site. Camera and image scanning need manual Android and desktop verification. Local history and offline/PWA functionality remain planned milestones.
 
 See the [branding kit](docs/BRANDING_KIT.md) for approved logo, color, typography, and creator portrait guidance.
 
