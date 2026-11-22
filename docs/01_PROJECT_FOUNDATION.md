@@ -46,7 +46,7 @@ Repository snapshot (2026-11-23)
 
 This project has moved beyond the original Vite starter. Repository inspection confirms React 19 + TypeScript + Vite, Tailwind CSS 4 integration, Lucide icons, an application shell and dashboard, light/dark color tokens, responsive desktop/mobile navigation, an About & Credits dialog, and a functional client-side QR Studio. QR Studio builds text, URL, phone, email, SMS, Wi-Fi, and vCard payloads; validates required fields; previews generated QR codes; and supports PNG download, content copy, and browser-supported sharing. The project also has a README, MIT license, favicon, and npm scripts for development, linting, formatting, and production builds.
 
-Barcode generation, camera scanning, result handling, history, favorites, settings, translations, persistence, service worker, manifest, and deployment workflow are not implemented. QR Studio has not yet received independent scanner or Android-device acceptance checks. There is no test script or test file. The initial `main` commit is pushed to the public GitHub repository `https://github.com/nasiropintu/scan-and-create`; GitHub Pages remains a plan, not a deployment. The current Vite config has no GitHub Pages base path. Mark a capability complete only after implementation and acceptance checks exist in the repository.
+Barcode generation, camera scanning, result handling, history, favorites, settings, translations, persistence, service worker, manifest, and deployment workflow are not implemented. QR Studio has not yet received independent scanner or Android-device acceptance checks. A local CI workflow now runs lint, formatting, and production build checks on pushes and pull requests targeting `main`, with a manual trigger; it will become active after it is committed and pushed. There is no test script or test file. The initial `main` commit is pushed to the public GitHub repository `https://github.com/nasiropintu/scan-and-create`; GitHub Pages remains a plan, not a deployment. The current Vite config has no GitHub Pages base path. Mark a capability complete only after implementation and acceptance checks exist in the repository.
 
 2. Product Goals and Non-Goals
    2.1 Goals
@@ -991,6 +991,7 @@ Next actions:
 - [x] Remove the unavailable portrait dependency and show the existing initials treatment.
 - [x] Replace the mismatched favicon and add the app favicon link.
 - [x] Implement QR Studio payloads, validation, live preview, PNG export, copy, and supported sharing.
+- [x] Add a GitHub Actions CI workflow for lint, format, and production build validation (local; commit and push to activate).
 - [ ] Prepare app/PWA icon sizes in the PWA milestone.
 - [x] Production build passes (`npm run build`, 2026-11-23).
 - [x] Run lint and format checks; both pass (`npm run lint`, `npm run format:check`, 2026-11-23).
