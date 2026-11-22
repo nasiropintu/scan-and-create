@@ -46,7 +46,7 @@ Repository snapshot (2026-11-23)
 
 This project has moved beyond the original Vite starter, but remains an early UI preview. Repository inspection confirms React 19 + TypeScript + Vite, Tailwind CSS 4 integration, Lucide icons, an application shell and dashboard, light/dark color tokens, responsive desktop/mobile navigation, and an About & Credits dialog. The project also has a README, MIT license, favicon, and npm scripts for development, linting, formatting, and production builds.
 
-Camera scanning, QR/barcode generation, result handling, history, favorites, settings, translations, persistence, service worker, manifest, and deployment workflow are not implemented. The feature and test folders are empty or absent. There is no test script, no test files, and no Git commit yet. GitHub Pages remains a plan, not a deployment. The current Vite config has no GitHub Pages base path. Mark a capability complete only after implementation and acceptance checks exist in the repository.
+Camera scanning, QR/barcode generation, result handling, history, favorites, settings, translations, persistence, service worker, manifest, and deployment workflow are not implemented. The feature and test folders are empty or absent. There is no test script or test file. The initial `main` commit is pushed to the private GitHub repository `https://github.com/nasiropintu/scan-and-create`; GitHub Pages remains a plan, not a deployment. The current Vite config has no GitHub Pages base path. Mark a capability complete only after implementation and acceptance checks exist in the repository.
 
 2. Product Goals and Non-Goals
    2.1 Goals
@@ -876,12 +876,13 @@ miscellaneous dumping ground.
     GitHub Pages does not run a Node backend. This is suitable because the
     MVP is client-side only.
     Repository
-    Suggested repository:
+    Current repository:
     Name: `scan-and-create`
+    URL: `https://github.com/nasiropintu/scan-and-create`
     Branch: `main`
-    Visibility: public is the simplest route for a free public project
-    and GitHub Pages workflow.
-    Include README, license decision, and documentation.
+    Visibility: private (created 2026-11-23).
+    The repository includes the README, MIT license, and this plan.
+    Confirm intended public-release visibility before publishing the app.
     Review GitHub's current plan limits and acceptable-use terms before
     publishing. Free service availability and limits can change.
     Cost assumptions
@@ -991,11 +992,11 @@ Next actions:
 - [x] Replace the mismatched favicon and add the app favicon link.
 - [ ] Prepare app/PWA icon sizes in the PWA milestone.
 - [x] Production build passes (`npm run build`, 2026-11-23).
-- [ ] Run the existing lint and format-check scripts; record actual results.
-- [ ] Add the project plan to version control and create the initial commit when ready.
+- [x] Run lint and format checks; both pass (`npm run lint`, `npm run format:check`, 2026-11-23).
+- [x] Add the plan and create the initial `main` commit (`6209577`); push to the private GitHub repository.
 - [ ] Finish shared design tokens and accessible UI patterns against the existing shell.
 - [ ] Implement and verify roadmap milestones; do not describe placeholders as working features.
-- [ ] Confirm GitHub repository URL before configuring Pages base path and deployment.
+- [ ] Configure the GitHub Pages base path and deployment after PWA work and release-visibility review.
 
 Available PowerShell commands from `D:\Projects\scan-and-create`:
 
@@ -1021,8 +1022,9 @@ There is currently no test script or test file. Add automated coverage as featur
 | UI framework               | React 19 + TypeScript + Vite                           | Scaffolded; dashboard exists                  |
 | Styling                    | Tailwind CSS 4 plugin plus authored CSS tokens         | Installed and in use                          |
 | Icons                      | Lucide React                                           | Installed and in use                          |
-| Lint/format                | Oxlint and Prettier                                    | Configured; check results not recorded        |
-| Hosting                    | GitHub Pages                                           | Planned; repository URL and base path unset   |
+| Lint/format                | Oxlint and Prettier                                    | Configured; lint and format checks pass       |
+| Repository                 | `nasiropintu/scan-and-create`                          | Created private; `main` pushed                |
+| Hosting                    | GitHub Pages                                           | Planned; base path and deployment unset       |
 | Backend/accounts/analytics | None in MVP                                            | Selected exclusions                           |
 | Local database             | IndexedDB; Dexie was proposed                          | Not selected or installed                     |
 | QR/barcode libraries       | `qrcode` and `JsBarcode` were proposed                 | Not installed; evaluate before implementation |
@@ -1055,14 +1057,9 @@ There is currently no test script or test file. Add automated coverage as featur
 
 Milestone 1: Accurate preview and reconciled foundation
 
-1. Correct preview copy that claims offline readiness before it exists.
-2. Resolve the missing creator portrait reference and confirm the favicon/app mark.
-3. Run and record lint and formatting results; the production build now passes.
-4. Commit the baseline and project documentation when ready.
-5. Finalize accessible shared UI patterns against the existing branded shell.
-6. Then begin QR Studio and proceed through the roadmap in order.
-
-Do not deploy to GitHub Pages until the repository identity and project-site base path are known.
+1. Continue refining accessible shared UI patterns against the existing branded shell.
+2. Start the QR Studio milestone and proceed to scanner and other features in roadmap order.
+3. Configure Pages only after PWA work and a public-release visibility decision.
 
 ---
 
