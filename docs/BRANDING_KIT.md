@@ -22,9 +22,10 @@ This document records the current product identity and approved creator portrait
 
 ## Creator portrait
 
-![NasirPintu creator portrait](../public/branding/nasirpintu.jpg)
+![NasirPintu creator portrait](assets/nasirpintu.jpg)
 
-- **Asset:** [`public/branding/nasirpintu.jpg`](../public/branding/nasirpintu.jpg)
+- **Application asset:** [`public/branding/nasirpintu.jpg`](../public/branding/nasirpintu.jpg)
+- **Documentation preview:** [`docs/assets/nasirpintu.jpg`](assets/nasirpintu.jpg), included beside this document so Markdown previews can render the portrait reliably.
 - **Format and dimensions:** JPEG, 400 × 400 pixels.
 - **Source:** Supplied by the creator for Scan & Create branding on 2026-11-23.
 - **Intended use:** Creator attribution, About & Credits, and project introductions.
