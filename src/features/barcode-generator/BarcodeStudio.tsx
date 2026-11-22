@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import JsBarcode from 'jsbarcode'
-import { AlertCircle, Barcode, Check, Download, Printer, ShieldCheck } from 'lucide-react'
+import {
+  AlertCircle,
+  Barcode,
+  Bookmark,
+  Check,
+  Download,
+  Printer,
+  ShieldCheck,
+} from 'lucide-react'
 import {
   barcodeFormats,
   BarcodeValidationError,
@@ -8,6 +16,7 @@ import {
   validateBarcodeValue,
 } from './validation'
 import './BarcodeStudio.css'
+import { saveHistoryItem } from '../history/database'
 
 const barcodeOptions = {
   width: 2,
@@ -24,6 +33,7 @@ const barcodeOptions = {
 export default function BarcodeStudio() {
   const [format, setFormat] = useState<BarcodeFormat>('CODE128')
   const [value, setValue] = useState('')
+  const [saveMessage, setSaveMessage] = useState('')
   const [generation, setGeneration] = useState<{
     input: string
     format: BarcodeFormat
@@ -81,6 +91,16 @@ export default function BarcodeStudio() {
     if (!currentSvg) return
     const blob = new Blob([currentSvg], { type: 'image/svg+xml;charset=utf-8' })
     downloadBlob(blob, `scan-and-create-${format.toLowerCase()}.svg`)
+  }
+
+  const saveBarcode = async () => {
+    if (!validation.value || !currentSvg) return
+    try {
+      await saveHistoryItem({ kind: 'barcode', format, value: validation.value })
+      setSaveMessage('Saved in this browser.')
+    } catch {
+      setSaveMessage('Could not save this barcode.')
+    }
   }
 
   const downloadPng = async () => {
@@ -180,6 +200,9 @@ export default function BarcodeStudio() {
               >
                 <Printer size={15} /> Print
               </button>
+              <button className="qr-secondary-button" type="button" onClick={saveBarcode}>
+                <Bookmark size={15} /> Save to history
+              </button>
             </div>
           )}
         </div>
@@ -204,11 +227,12 @@ export default function BarcodeStudio() {
             </div>
           </div>
           <p className="barcode-status" role="status" aria-live="polite">
-            {currentSvg && (
-              <>
-                <Check size={13} /> Preview updates as you type.
-              </>
-            )}
+            {saveMessage ||
+              (currentSvg && (
+                <>
+                  <Check size={13} /> Preview updates as you type.
+                </>
+              ))}
           </p>
         </div>
       </div>

@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import QRCode from 'qrcode'
-import { Check, Copy, Download, QrCode, Share2, ShieldCheck } from 'lucide-react'
+import {
+  Bookmark,
+  Check,
+  Copy,
+  Download,
+  QrCode,
+  Share2,
+  ShieldCheck,
+} from 'lucide-react'
 import {
   createQrPayload,
   QrPayloadError,
@@ -8,6 +16,7 @@ import {
   type QrFormValues,
 } from './payload'
 import './QRStudio.css'
+import { saveHistoryItem } from '../history/database'
 
 const contentTypes: { value: QrContentType; label: string }[] = [
   { value: 'text', label: 'Plain text' },
@@ -228,6 +237,25 @@ export default function QRStudio() {
     }
   }
 
+  const saveQrToHistory = async () => {
+    try {
+      await saveHistoryItem({
+        kind: 'qr',
+        format: contentType,
+        value: payloadResult.payload,
+      })
+      setActionStatus({
+        payload: payloadResult.payload,
+        message: 'Saved in this browser.',
+      })
+    } catch {
+      setActionStatus({
+        payload: payloadResult.payload,
+        message: 'Could not save this QR code.',
+      })
+    }
+  }
+
   return (
     <section className="qr-studio-page" aria-labelledby="qr-studio-title">
       <div className="qr-studio-heading">
@@ -283,6 +311,17 @@ export default function QRStudio() {
           >
             <Copy size={15} /> Copy content
           </button>
+          <button
+            className="qr-secondary-button"
+            type="button"
+            onClick={saveQrToHistory}
+            disabled={!payloadResult.payload}
+          >
+            <Bookmark size={15} /> Save to history
+          </button>
+          <small className="qr-history-note">
+            Saved locally. Wi-Fi codes may include a network password.
+          </small>
         </div>
 
         <div className="qr-preview-card" aria-label="QR code preview">

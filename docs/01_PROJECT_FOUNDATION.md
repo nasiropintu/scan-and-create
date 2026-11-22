@@ -46,7 +46,7 @@ Repository snapshot (2026-11-23)
 
 This project has moved beyond the original Vite starter. Repository inspection confirms React 19 + TypeScript + Vite, Tailwind CSS 4 integration, Lucide icons, an application shell and dashboard, light/dark color tokens, responsive desktop/mobile navigation, an About & Credits dialog, and functional client-side QR and Barcode Studios. QR Studio builds text, URL, phone, email, SMS, Wi-Fi, and vCard payloads; validates required fields; previews generated QR codes; and supports PNG download, content copy, and browser-supported sharing. Barcode Studio supports the planned formats with validation, SVG/PNG download, and print layout. The project also has a README, MIT license, favicon, and npm scripts for development, linting, formatting, tests, and production builds.
 
-The scanner page now starts the camera only after user action, prefers native `BarcodeDetector` when it covers the supported format set, and uses the local ZXing browser decoder otherwise. It supports camera selection, image upload decoding, camera cleanup, and safe plain-text result display; results are not persisted, and links are not opened automatically. Camera scanning still needs manual acceptance on Android and desktop. History, favorites, settings, translations, persistence, service worker, and manifest are not implemented. Eleven automated QR payload and barcode validation tests pass with the Node.js built-in test runner. CI checks lint, formatting, tests, and production build on pushes and pull requests targeting `main`; the Pages workflow builds and publishes from `main`. The Vite base path is configured for the public project URL in GitHub Actions builds. The user confirmed that the GitHub Pages site is live. The public repository is `https://github.com/nasiropintu/scan-and-create`. Mark a capability complete only after implementation and acceptance checks exist in the repository.
+The scanner page starts the camera only after user action, prefers native `BarcodeDetector` when it covers the supported format set, and uses the local ZXing browser decoder otherwise. It supports camera selection, image upload decoding, camera cleanup, and safe plain-text result display; links are not opened automatically. Camera scanning still needs manual acceptance on Android and desktop. Users can explicitly save scans and generated QR/barcode values into versioned Dexie/IndexedDB storage. History and Favorites pages support search, type filtering, favorite toggles, per-item deletion, and clear-all; saved values remain in this browser and are not encrypted by this app. Browser verification of persistence and CRUD is still pending. Eleven automated QR payload and barcode validation tests pass with the Node.js built-in test runner. CI checks lint, formatting, tests, and production build on pushes and pull requests targeting `main`; the Pages workflow builds and publishes from `main`. The Vite base path is configured for the public project URL in GitHub Actions builds. The user confirmed that the GitHub Pages site is live. The public repository is `https://github.com/nasiropintu/scan-and-create`. Mark a capability complete only after implementation and acceptance checks exist in the repository.
 
 2. Product Goals and Non-Goals
    2.1 Goals
@@ -310,7 +310,7 @@ capabilities
 Browser-native scanning `BarcodeDetector` when Optional native
 supported acceleration
 Local database IndexedDB through Dexie Local history and
-favorites
+favorites (installed; schema v1 implemented)
 PWA `vite-plugin-pwa` Manifest and service
 worker
 Validation Zod Validate forms and
@@ -770,6 +770,10 @@ miscellaneous dumping ground.
     Favorite and delete actions work.
     Clear history removes the expected local records.
     No scan content is sent over the network.
+    Implementation status: explicit save actions, versioned local schema,
+    searchable/filterable history and favorites pages, favorite toggles,
+    copy, explicit URL opening, per-item deletion, and clear-all are
+    implemented. Browser reload and CRUD acceptance checks remain pending.
     Phase 6 --- PWA and offline support
     Estimated effort: 2--3 days
     Tasks:
@@ -1004,7 +1008,9 @@ Next actions:
 - [x] Add automated tests for QR payload building and validation (6 passing).
 - [x] Add automated barcode format and check-digit validation tests (5 passing).
 - [x] Implement camera scanning with native detection, local ZXing fallback, camera selection, image upload decoding, stream cleanup, and safe result display.
+- [x] Add versioned Dexie/IndexedDB history for user-saved scans and generated QR/barcodes, with search/filter, favorites, copy, explicit website opening, delete, and clear-all.
 - [x] Deploy the site to GitHub Pages (user confirmed live).
+- [ ] Verify saved-item persistence and history/favorites actions after browser reload.
 - [ ] Verify camera and image scanning on Android and desktop, including denied permissions and camera cleanup.
 - [ ] Verify generated QR images with independent scanner apps and on Android.
 - [ ] Verify generated barcodes with independent scanner apps and on Android.
@@ -1027,25 +1033,25 @@ npm run preview
 
 17. Decisions Register
 
-| Decision                   | Current choice                                             | Status                                                             |
-| -------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------ |
-| Product name               | Scan & Create                                              | Selected; exact spelling                                           |
-| Brand direction            | Premium Minimal; purple-led                                | In use; see Section 8                                              |
-| Platform                   | Responsive React PWA                                       | PWA not implemented                                                |
-| UI framework               | React 19 + TypeScript + Vite                               | Scaffolded; dashboard exists                                       |
-| Styling                    | Tailwind CSS 4 plugin plus authored CSS tokens             | Installed and in use                                               |
-| Icons                      | Lucide React                                               | Installed and in use                                               |
-| Lint/format                | Oxlint and Prettier                                        | Configured; lint and format checks pass                            |
-| Repository                 | `nasiropintu/scan-and-create`                              | Public; `main` pushed                                              |
-| Hosting                    | GitHub Pages                                               | Live; user confirmed deployment                                    |
-| Backend/accounts/analytics | None in MVP                                                | Selected exclusions                                                |
-| Local database             | IndexedDB; Dexie was proposed                              | Not selected or installed                                          |
-| QR/barcode libraries       | `qrcode` and `JsBarcode` installed                         | Both generators implemented; physical scanner verification pending |
-| Scanner                    | Native `BarcodeDetector` plus local ZXing browser fallback | Implemented; device acceptance checks pending                      |
-| Languages                  | English and Bangla                                         | Planned; no translation system or selector                         |
-| Themes                     | Light and dark                                             | Tokens and toggle exist; system mode planned                       |
-| Offline/PWA                | Manifest, icons, service worker                            | Planned; do not claim offline-ready                                |
-| Creator identity           | NasirPintu (Mohammad Nasiruddin Pintu)                     | Verified in README and About dialog                                |
+| Decision                   | Current choice                                             | Status                                                                                    |
+| -------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| Product name               | Scan & Create                                              | Selected; exact spelling                                                                  |
+| Brand direction            | Premium Minimal; purple-led                                | In use; see Section 8                                                                     |
+| Platform                   | Responsive React PWA                                       | PWA not implemented                                                                       |
+| UI framework               | React 19 + TypeScript + Vite                               | Scaffolded; dashboard exists                                                              |
+| Styling                    | Tailwind CSS 4 plugin plus authored CSS tokens             | Installed and in use                                                                      |
+| Icons                      | Lucide React                                               | Installed and in use                                                                      |
+| Lint/format                | Oxlint and Prettier                                        | Configured; lint and format checks pass                                                   |
+| Repository                 | `nasiropintu/scan-and-create`                              | Public; `main` pushed                                                                     |
+| Hosting                    | GitHub Pages                                               | Live; user confirmed deployment                                                           |
+| Backend/accounts/analytics | None in MVP                                                | Selected exclusions                                                                       |
+| Local database             | IndexedDB through Dexie                                    | Schema v1 and user-controlled history/favorites implemented; browser verification pending |
+| QR/barcode libraries       | `qrcode` and `JsBarcode` installed                         | Both generators implemented; physical scanner verification pending                        |
+| Scanner                    | Native `BarcodeDetector` plus local ZXing browser fallback | Implemented; device acceptance checks pending                                             |
+| Languages                  | English and Bangla                                         | Planned; no translation system or selector                                                |
+| Themes                     | Light and dark                                             | Tokens and toggle exist; system mode planned                                              |
+| Offline/PWA                | Manifest, icons, service worker                            | Planned; do not claim offline-ready                                                       |
+| Creator identity           | NasirPintu (Mohammad Nasiruddin Pintu)                     | Verified in README and About dialog                                                       |
 
 ---
 
@@ -1068,11 +1074,12 @@ npm run preview
 
 19. Next Milestone
 
-Milestone 4: Scanner device verification
+Milestone 5: Scanner and history acceptance
 
-1. Verify QR, barcode, camera scanning, and image-upload decoding with independent tools on desktop and Android.
-2. Confirm denied permissions, camera switching, and route changes always stop the camera stream.
-3. Fix reliability issues found during manual checks before starting local history and favorites.
+1. Verify camera scanning and image-upload decoding on desktop and Android, including denied permission, camera switching, and camera cleanup.
+2. Verify QR and barcode outputs with independent scanner apps.
+3. Verify saved-item persistence, search/filter, favorites, deletion, and clear-all after a browser reload.
+4. Proceed to PWA and offline support after these acceptance checks pass.
 
 ---
 

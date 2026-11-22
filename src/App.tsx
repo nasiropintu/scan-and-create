@@ -24,6 +24,7 @@ import {
 } from 'lucide-react'
 import QRStudio from './features/qr-generator/QRStudio'
 import BarcodeStudio from './features/barcode-generator/BarcodeStudio'
+import HistoryPage from './features/history/HistoryPage'
 
 const ScannerPage = lazy(() => import('./features/scanner/ScannerPage'))
 
@@ -203,6 +204,10 @@ function App() {
             >
               <ScannerPage />
             </Suspense>
+          ) : page === 'history' ? (
+            <HistoryPage />
+          ) : page === 'favorites' ? (
+            <HistoryPage favoritesOnly />
           ) : isDashboard ? (
             <>
               <section className="welcome-section">
@@ -352,8 +357,6 @@ function App() {
           ) : (
             <section className="placeholder-page">
               <div className="placeholder-icon">
-                {page === 'history' && <History size={32} />}
-                {page === 'favorites' && <Star size={32} />}
                 {page === 'settings' && <Settings size={32} />}
               </div>
               <div className="eyebrow">
@@ -400,6 +403,13 @@ function App() {
         >
           <History size={20} />
           <span>History</span>
+        </button>
+        <button
+          className={page === 'favorites' ? 'selected' : ''}
+          onClick={() => navigate('favorites')}
+        >
+          <Star size={20} />
+          <span>Saved</span>
         </button>
       </nav>
 

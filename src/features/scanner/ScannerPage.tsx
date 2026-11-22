@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import {
   AlertCircle,
+  Bookmark,
   Camera,
   Check,
   Copy,
@@ -17,6 +18,7 @@ import {
   type DecodedScan,
 } from './scannerAdapter'
 import './ScannerPage.css'
+import { saveHistoryItem } from '../history/database'
 
 type CameraOption = { deviceId: string; label: string }
 
@@ -119,6 +121,16 @@ export default function ScannerPage() {
     }
   }
 
+  const saveResult = async () => {
+    if (!result) return
+    try {
+      await saveHistoryItem({ kind: 'scan', format: result.format, value: result.text })
+      setStatus('Saved in this browser.')
+    } catch {
+      setScanError('Could not save this result. Check your browser storage settings.')
+    }
+  }
+
   return (
     <section className="scanner-page" aria-labelledby="scanner-title">
       <div className="scanner-heading">
@@ -211,6 +223,13 @@ export default function ScannerPage() {
                 onClick={copyResult}
               >
                 <Copy size={15} /> Copy result
+              </button>
+              <button
+                className="scanner-secondary-button"
+                type="button"
+                onClick={() => void saveResult()}
+              >
+                <Bookmark size={15} /> Save to history
               </button>
               <p className="scanner-safe-note">
                 Scanned content is shown as text. Links are never opened automatically.
