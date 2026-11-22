@@ -30,7 +30,7 @@ This document records the current product identity and approved creator portrait
 - **Intended use:** Creator attribution, About & Credits, and project introductions.
 - Keep the square crop and natural colors. Do not stretch, recolor, add filters, or place text across the face. A circular crop is suitable for compact profile UI.
 - This portrait is a creator identity asset, not a product logo. Keep the scan-frame mark for product identity.
-- The application currently uses the initials treatment in its About dialog; this asset is available for a future portrait update.
+- The About & Credits dialog uses this portrait, with initials as a fallback if the local image cannot load.
 
 ## Voice and use
 

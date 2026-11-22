@@ -101,6 +101,14 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
             <div className="about-avatar-fallback visible" aria-hidden="true">
               NP
             </div>
+            <img
+              className="about-avatar"
+              src={`${import.meta.env.BASE_URL}branding/nasirpintu.jpg`}
+              alt="Portrait of NasirPintu"
+              onError={(event) => {
+                event.currentTarget.hidden = true
+              }}
+            />
             <span className="about-avatar-badge">
               <Sparkles size={12} />
             </span>

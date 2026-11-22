@@ -547,10 +547,10 @@ Current brand identity (verified against the application)
 - Typography: Inter first, with system sans-serif fallbacks. Avoid requiring a remote font for offline use.
 - Icons: Lucide React, used with consistent stroke weight and size.
 - Creator: NasirPintu (Mohammad Nasiruddin Pintu), Creator & Product Architect. README/About credits and social handles are attribution content, not product feature claims.
-- Creator portrait: a creator-supplied 400 × 400 JPEG is stored at `public/branding/nasirpintu.jpg` for approved creator attribution and About materials; the app currently keeps its initials treatment. Usage guidance is in `docs/BRANDING_KIT.md`.
+- Creator portrait: the creator-supplied 400 × 400 JPEG at `public/branding/nasirpintu.jpg` is used in the About & Credits dialog, with an initials fallback. Usage guidance is in `docs/BRANDING_KIT.md`.
 - English UI exists; Bangla is planned, not implemented. Light/dark themes exist; system-following mode is planned.
 
-Accuracy fixes applied in earlier updates: replaced the unsupported “Offline-ready” label with an accurate no-tracking statement; added the creator-supplied portrait as an approved local brand asset; scoped privacy statements to implemented behavior; and replaced the mismatched favicon with the scan-frame mark. This update adds the PWA manifest, generated product icons, static asset service worker, and user-controlled update prompt. Install and offline startup still require manual device/browser acceptance. Avoid implying accounts or signed-in profiles. Do not imply a capability is verified solely because it is configured.
+Accuracy fixes applied in earlier updates: replaced the unsupported “Offline-ready” label with an accurate no-tracking statement; added the creator-supplied portrait as an approved local brand asset; scoped privacy statements to implemented behavior; and replaced the mismatched favicon with the scan-frame mark. The portrait is now used in the About & Credits dialog with an initials fallback. The PWA update adds a manifest, generated product icons, static asset service worker, and user-controlled update prompt. Install and offline startup still require manual device/browser acceptance. Avoid implying accounts or signed-in profiles. Do not imply a capability is verified solely because it is configured.
 
 ---
 
@@ -993,7 +993,7 @@ Complete by repository inspection:
 Next actions:
 
 - [x] Replace the unsupported “Offline-ready” label with an accurate no-tracking statement.
-- [x] Remove the unavailable portrait dependency and show the existing initials treatment.
+- [x] Add the creator-supplied portrait to the About & Credits dialog, with an initials fallback.
 - [x] Replace the mismatched favicon and add the app favicon link.
 - [x] Implement QR Studio payloads, validation, live preview, PNG export, copy, and supported sharing.
 - [x] Implement Barcode Studio for Code 128, EAN-13/8, UPC-A/E, Code 39, ITF, and ITF-14 with format-specific validation and SVG/PNG/print output.
@@ -1078,7 +1078,7 @@ npm run preview
 
 Phase 6 implementation is complete locally. The next milestone is **PWA acceptance and release hardening**:
 
-1. Commit and push the PWA configuration and generated assets so GitHub Actions deploys them.
+1. Review and commit the local PWA configuration, generated assets, and creator portrait update. You handle pushing and any release tagging.
 2. On Android Chrome and desktop Chrome/Edge, install the app where supported and confirm the correct name, icon, and standalone launch.
 3. Load the app online once, then disable network access and verify the app shell and static assets load. Confirm camera scanning is understood to require a usable camera/browser context and that user history remains available from IndexedDB.
 4. Publish a later update and verify the prompt waits for the user's choice and saved local records remain intact.

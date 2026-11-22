@@ -984,6 +984,11 @@ button:focus-visible {
   border-radius: 50%;
   object-fit: cover;
 }
+.about-avatar {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
 .about-avatar-fallback {
   display: grid;
   place-items: center;
