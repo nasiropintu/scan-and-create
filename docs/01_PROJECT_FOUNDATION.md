@@ -1054,12 +1054,12 @@ npm run preview
 | Repository                 | `nasiropintu/scan-and-create`                                 | Public; `main` pushed                                                                            |
 | Hosting                    | GitHub Pages                                                  | Live; user confirmed deployment                                                                  |
 | Backend/accounts/analytics | None in MVP                                                   | Selected exclusions                                                                              |
-| Local database             | IndexedDB through Dexie                                       | Schema v1; history persistence after reload/update confirmed; Favorites persistence pending       |
+| Local database             | IndexedDB through Dexie                                       | Schema v1; history persistence after reload/update confirmed; Favorites persistence pending      |
 | QR/barcode libraries       | `qrcode` and `JsBarcode` installed                            | Both generators implemented; independent QR and CODE128 scans confirmed                          |
-| Scanner                    | Native `BarcodeDetector` plus local ZXing browser fallback    | Desktop image and Android camera scanning confirmed; denied-permission handling pending           |
+| Scanner                    | Native `BarcodeDetector` plus local ZXing browser fallback    | Desktop image and Android camera scanning confirmed; denied-permission handling pending          |
 | Languages                  | English and Bangla                                            | Planned; no translation system or selector                                                       |
 | Themes                     | Light and dark                                                | Tokens and toggle exist; system mode planned                                                     |
-| Offline/PWA                | Manifest, icons, Workbox static asset precache, update prompt | Desktop Edge install, offline startup, update, and data retention confirmed; Android PWA pending   |
+| Offline/PWA                | Manifest, icons, Workbox static asset precache, update prompt | Desktop Edge install, offline startup, update, and data retention confirmed; Android PWA pending |
 | Creator identity           | NasirPintu (Mohammad Nasiruddin Pintu)                        | Verified in README and About dialog                                                              |
 
 ---
