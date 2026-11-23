@@ -258,7 +258,7 @@ function App() {
 
           <div className="sidebar-footer">
             <span className="footer-dot" />
-            Version 0.1.0 · PWA Preview
+            Version 0.1.1 · PWA
           </div>
         </div>
       </aside>

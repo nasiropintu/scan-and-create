@@ -71,7 +71,7 @@ export default function SettingsPage({
         {
           app: 'Scan & Create',
           exportedAt: new Date().toISOString(),
-          version: '0.1.0',
+          version: '0.1.1',
           items,
         },
         null,
@@ -264,7 +264,7 @@ export default function SettingsPage({
             </span>
             <div>
               <h2>About & Creator</h2>
-              <p>Scan & Create · Version 0.1.0 Preview</p>
+              <p>Scan & Create · Version 0.1.1</p>
             </div>
           </div>
 
