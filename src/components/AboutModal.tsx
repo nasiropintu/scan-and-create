@@ -115,7 +115,7 @@ export default function AboutModal({ isOpen, onClose }: AboutModalProps) {
           </div>
           <div className="about-creator-copy">
             <span className="about-kicker">
-              <Heart size={12} fill="currentColor" /> BUILT WITH PURPOSE
+              <Heart size={12} fill="currentColor" /> Crafted with Love
             </span>
             <h2 id="about-title">NasirPintu</h2>
             <p className="about-subtitle">

@@ -7,6 +7,7 @@ This document records the current product identity and approved creator portrait
 - **Product name:** Scan & Create
 - **Descriptor:** Your Digital Toolkit
 - **Product line:** “Made for simplicity. Designed for privacy.”
+- **Creator attribution:** “Crafted with Love”
 - **Direction:** Premium Minimal: calm, precise, practical, and friendly.
 - **Creator:** NasirPintu (Mohammad Nasiruddin Pintu), Creator & Product Architect.
 
