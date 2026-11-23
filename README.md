@@ -30,7 +30,7 @@ npm run format:check
 
 ## Current status
 
-The application shell, QR Studio, Barcode Studio, scanner, and local history/favorites are available on the live site. Camera/image scanning and saved-item persistence need manual Android/browser verification. PWA installation and static app-shell caching are configured; verify installation, first-load caching, offline startup, and update handling on Android and desktop before claiming offline acceptance.
+The application shell, QR Studio, Barcode Studio, scanner, and local history/favorites are available on the live site. Desktop Edge PWA installation, offline startup, update behavior, saved history after reload, image scanning, QR/barcode scanning, keyboard navigation, responsive layout, and 200% zoom have been manually checked. Android camera scanning was also checked. Android PWA installation/offline behavior, Favorites persistence, camera-denial handling and stream cleanup, and a full contrast/accessibility review remain to be verified.
 
 Regenerate the product's PWA icon files after changing the source artwork:
 

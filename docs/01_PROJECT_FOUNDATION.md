@@ -46,7 +46,7 @@ Repository snapshot (2026-11-23)
 
 This project has moved beyond the original Vite starter. Repository inspection confirms React 19 + TypeScript + Vite, Tailwind CSS 4 integration, Lucide icons, an application shell and dashboard, light/dark color tokens, responsive desktop/mobile navigation, an About & Credits dialog, and functional client-side QR and Barcode Studios. QR Studio builds text, URL, phone, email, SMS, Wi-Fi, and vCard payloads; validates required fields; previews generated QR codes; and supports PNG download, content copy, and browser-supported sharing. Barcode Studio supports the planned formats with validation, SVG/PNG download, and print layout. The project also has a README, MIT license, favicon, and npm scripts for development, linting, formatting, tests, and production builds.
 
-The scanner page starts the camera only after user action, prefers native `BarcodeDetector` when it covers the supported format set, and uses the local ZXing browser decoder otherwise. It supports camera selection, image upload decoding, camera cleanup, and safe plain-text result display; links are not opened automatically. Camera scanning still needs manual acceptance on Android and desktop. Users can explicitly save scans and generated QR/barcode values into versioned Dexie/IndexedDB storage. History and Favorites pages support search, type filtering, favorite toggles, per-item deletion, and clear-all; saved values remain in this browser and are not encrypted by this app. Browser verification of persistence and CRUD is still pending. Eleven automated QR payload and barcode validation tests pass with the Node.js built-in test runner. CI checks lint, formatting, tests, and production build on pushes and pull requests targeting `main`; the Pages workflow builds and publishes from `main`. The Vite base path is configured for the public project URL in GitHub Actions builds. The user confirmed that the GitHub Pages site is live. The public repository is `https://github.com/nasiropintu/scan-and-create`. Mark a capability complete only after implementation and acceptance checks exist in the repository.
+The scanner page starts the camera only after user action, prefers native `BarcodeDetector` when it covers the supported format set, and uses the local ZXing browser decoder otherwise. It supports camera selection, image upload decoding, camera cleanup, and safe plain-text result display; links are not opened automatically. In manual acceptance reported on 2026-11-23, the user confirmed desktop image scan, Android camera scan, and explicit website opening; denied-permission handling and stream cleanup remain unverified. Users can explicitly save scans and generated QR/barcode values into versioned Dexie/IndexedDB storage. History and Favorites pages support search, type filtering, favorite toggles, per-item deletion, and clear-all; saved values remain in this browser and are not encrypted by this app. Saved history after reload and data survival through an app update were manually confirmed; Favorites persistence still needs verification. Eleven automated QR payload and barcode validation tests pass with the Node.js built-in test runner. CI checks lint, formatting, tests, and production build on pushes and pull requests targeting `main`; the Pages workflow builds and publishes from `main`. The Vite base path is configured for the public project URL in GitHub Actions builds. The user confirmed that the GitHub Pages site is live. The public repository is `https://github.com/nasiropintu/scan-and-create`. Mark a capability complete only after implementation and acceptance checks exist in the repository.
 
 2. Product Goals and Non-Goals
    2.1 Goals
@@ -798,14 +798,16 @@ miscellaneous dumping ground.
     Add unit tests for validation and payload builders.
     Add component tests for key forms and actions.
     Add end-to-end tests for critical journeys.
-    Test small and large screens.
-    Test English and Bangla.
-    Test light and dark themes.
-    Test permission denial and no-camera scenarios.
-    Test offline behavior.
-    Test keyboard navigation and contrast.
-    Review bundle size and performance.
-    Review privacy and security requirements.
+    [x] Test responsive layout and keyboard navigation (manual, 2026-11-23).
+    [x] Verify desktop PWA install, offline startup, and update behavior (manual, 2026-11-23).
+    [x] Verify save persistence through reload and app update (manual, 2026-11-23).
+    [x] Verify image scanning, Android camera scanning, and explicit result opening (manual, 2026-11-23).
+    [x] Verify generated QR and CODE128 with independent scanners (manual, 2026-11-23).
+    [ ] Verify Android PWA installation and offline startup.
+    [ ] Test English/Bangla (Bangla is not implemented) and light/dark themes.
+    [ ] Test permission denial, no-camera handling, and camera stream cleanup.
+    [ ] Complete contrast review and screen-reader checks.
+    [ ] Review bundle size/performance and privacy/security requirements.
     Acceptance criteria
     Critical user journeys pass.
     No known high-severity privacy or security issue remains.
@@ -980,7 +982,7 @@ replaceable libraries
 
 16. Current Project Status and Immediate Checklist
 
-The repository has a working branded dashboard preview. The foundation phase is partially complete; feature implementation has not begun.
+The repository has a live, feature-complete core application. Phase 0–6 implementation and GitHub Pages deployment are in place. On 2026-11-23 the user manually confirmed desktop Edge PWA install, offline startup, update behavior with saved-data retention, history persistence after reload, image scanning, Android camera scanning, independent QR/barcode scanning, keyboard navigation, responsive layout, and usable layout at 200% browser zoom. The checks below record that report; they do not replace repeatable automated acceptance tests.
 
 Complete by repository inspection:
 
@@ -1000,22 +1002,27 @@ Next actions:
 - [x] Add a GitHub Actions CI workflow for lint, format, tests, and production build validation (local; commit and push to activate).
 - [x] Configure the GitHub Pages Vite base path for production builds while retaining root paths for local development.
 - [x] Add a GitHub Pages deployment workflow (local; commit, push, and select GitHub Actions in Pages settings to activate).
-- [ ] Prepare app/PWA icon sizes in the PWA milestone.
+- [x] Prepare app/PWA icon sizes and configure install metadata.
 - [x] Production build passes (`npm run build`, 2026-11-23).
 - [x] Run lint and format checks; both pass (`npm run lint`, `npm run format:check`, 2026-11-23).
 - [x] Add the plan and create the initial `main` commit (`6209577`); push to the public GitHub repository.
-- [ ] Finish shared design tokens and accessible UI patterns against the existing shell.
+- [ ] Complete the shared design-token and accessibility review, including screen-reader checks.
 - [x] Add automated tests for QR payload building and validation (6 passing).
 - [x] Add automated barcode format and check-digit validation tests (5 passing).
 - [x] Implement camera scanning with native detection, local ZXing fallback, camera selection, image upload decoding, stream cleanup, and safe result display.
 - [x] Add versioned Dexie/IndexedDB history for user-saved scans and generated QR/barcodes, with search/filter, favorites, copy, explicit website opening, delete, and clear-all.
 - [x] Deploy the site to GitHub Pages (user confirmed live).
 - [x] Configure PWA manifest, install metadata, generated product icons, static asset precaching, and a user-controlled update prompt.
-- [ ] Verify installation, offline startup, and update behavior on Android and desktop browsers before describing the PWA as accepted.
-- [ ] Verify saved-item persistence and history/favorites actions after browser reload.
-- [ ] Verify camera and image scanning on Android and desktop, including denied permissions and camera cleanup.
-- [ ] Verify generated QR images with independent scanner apps and on Android.
-- [ ] Verify generated barcodes with independent scanner apps and on Android.
+- [x] Verify desktop Edge PWA installation, offline startup, and update behavior; saved data survived the update (user confirmed, 2026-11-23).
+- [ ] Verify Android PWA installation and offline startup.
+- [x] Verify saved history persistence after reload (user confirmed, 2026-11-23).
+- [ ] Verify Favorites persistence and remaining history actions after reload.
+- [x] Verify image scanning and Android camera scanning with safe, explicit website opening (user confirmed, 2026-11-23).
+- [ ] Verify camera permission denial, no-camera behavior, and stream cleanup.
+- [x] Verify generated QR and CODE128 barcode with independent scanners (user confirmed, 2026-11-23).
+- [x] Verify keyboard navigation, responsive layout, and 200% zoom reflow at a basic manual level (user confirmed, 2026-11-23).
+- [ ] Complete color-contrast and screen-reader review.
+- [ ] Run the documented lint, test, format, and production build checks after the latest changes.
 - [ ] Implement remaining roadmap milestones; do not describe placeholders as working features.
 
 Available PowerShell commands from `D:\Projects\scan-and-create`:
@@ -1047,12 +1054,12 @@ npm run preview
 | Repository                 | `nasiropintu/scan-and-create`                                 | Public; `main` pushed                                                                            |
 | Hosting                    | GitHub Pages                                                  | Live; user confirmed deployment                                                                  |
 | Backend/accounts/analytics | None in MVP                                                   | Selected exclusions                                                                              |
-| Local database             | IndexedDB through Dexie                                       | Schema v1 and user-controlled history/favorites implemented; browser verification pending        |
-| QR/barcode libraries       | `qrcode` and `JsBarcode` installed                            | Both generators implemented; physical scanner verification pending                               |
-| Scanner                    | Native `BarcodeDetector` plus local ZXing browser fallback    | Implemented; device acceptance checks pending                                                    |
+| Local database             | IndexedDB through Dexie                                       | Schema v1; history persistence after reload/update confirmed; Favorites persistence pending       |
+| QR/barcode libraries       | `qrcode` and `JsBarcode` installed                            | Both generators implemented; independent QR and CODE128 scans confirmed                          |
+| Scanner                    | Native `BarcodeDetector` plus local ZXing browser fallback    | Desktop image and Android camera scanning confirmed; denied-permission handling pending           |
 | Languages                  | English and Bangla                                            | Planned; no translation system or selector                                                       |
 | Themes                     | Light and dark                                                | Tokens and toggle exist; system mode planned                                                     |
-| Offline/PWA                | Manifest, icons, Workbox static asset precache, update prompt | Implemented in repository; install and offline acceptance pending                                |
+| Offline/PWA                | Manifest, icons, Workbox static asset precache, update prompt | Desktop Edge install, offline startup, update, and data retention confirmed; Android PWA pending   |
 | Creator identity           | NasirPintu (Mohammad Nasiruddin Pintu)                        | Verified in README and About dialog                                                              |
 
 ---
@@ -1076,14 +1083,7 @@ npm run preview
 
 19. Next Milestone
 
-Phase 6 implementation, including the manifest, generated assets, service worker, and user-controlled update prompt, is present in the repository. Those changes are already part of the project history; no local PWA changes are waiting to be committed. The next milestone is **PWA acceptance and release hardening**:
-
-1. On Android Chrome and desktop Chrome/Edge, install the deployed app where supported and confirm the name, icon, and standalone launch.
-2. Load the deployed app online once, then disable network access and verify the app shell and static assets load. Confirm camera scanning still needs a usable camera/browser context and saved history remains available from IndexedDB.
-3. Publish a later update and verify the prompt waits for the user's choice and saved local records remain intact.
-4. Complete the remaining scanner, history, generator, accessibility, and responsive manual acceptance checks listed above.
-
-These checks require the deployed site and real browser/device controls. Do not describe offline startup or installation as verified until they pass. After acceptance, continue Phase 7 QA, accessibility, and hardening.
+Phase 6 implementation and desktop PWA acceptance are complete. User-reported checks on 2026-11-23 also covered update/data retention, scanner paths, generated-code scanning, keyboard navigation, responsive behavior, and 200% zoom. Continue **Phase 7 QA and hardening** with the remaining items in Section 16: verify Android PWA install/offline behavior, Favorites persistence, denied-camera/no-camera cleanup, complete contrast and screen-reader review, then run the repository's lint, format, test, and build checks. Bangla localization and system-following theme mode remain planned product work, not completed capabilities.
 
 ---
 
