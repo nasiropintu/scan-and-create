@@ -1076,15 +1076,14 @@ npm run preview
 
 19. Next Milestone
 
-Phase 6 implementation is complete locally. The next milestone is **PWA acceptance and release hardening**:
+Phase 6 implementation, including the manifest, generated assets, service worker, and user-controlled update prompt, is present in the repository. Those changes are already part of the project history; no local PWA changes are waiting to be committed. The next milestone is **PWA acceptance and release hardening**:
 
-1. Review and commit the local PWA configuration, generated assets, and creator portrait update. You handle pushing and any release tagging.
-2. On Android Chrome and desktop Chrome/Edge, install the app where supported and confirm the correct name, icon, and standalone launch.
-3. Load the app online once, then disable network access and verify the app shell and static assets load. Confirm camera scanning is understood to require a usable camera/browser context and that user history remains available from IndexedDB.
-4. Publish a later update and verify the prompt waits for the user's choice and saved local records remain intact.
-5. Complete the remaining scanner, history, generator, accessibility, and responsive manual acceptance checks listed above.
+1. On Android Chrome and desktop Chrome/Edge, install the deployed app where supported and confirm the name, icon, and standalone launch.
+2. Load the deployed app online once, then disable network access and verify the app shell and static assets load. Confirm camera scanning still needs a usable camera/browser context and saved history remains available from IndexedDB.
+3. Publish a later update and verify the prompt waits for the user's choice and saved local records remain intact.
+4. Complete the remaining scanner, history, generator, accessibility, and responsive manual acceptance checks listed above.
 
-Do not describe offline startup or installation as verified until these checks pass. After acceptance, continue Phase 7 QA, accessibility, and hardening.
+These checks require the deployed site and real browser/device controls. Do not describe offline startup or installation as verified until they pass. After acceptance, continue Phase 7 QA, accessibility, and hardening.
 
 ---
 

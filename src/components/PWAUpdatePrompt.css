@@ -61,6 +61,11 @@
   font-weight: 700;
 }
 
+.pwa-notice-action:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
 .pwa-notice-close {
   background: transparent;
   color: var(--text-secondary);

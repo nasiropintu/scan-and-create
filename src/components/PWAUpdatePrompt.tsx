@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
 import { Check, Download, X } from 'lucide-react'
 import './PWAUpdatePrompt.css'
 
 export default function PWAUpdatePrompt() {
+  const [updating, setUpdating] = useState(false)
   const {
     offlineReady: [offlineReady, setOfflineReady],
     needRefresh: [needRefresh, setNeedRefresh],
@@ -16,8 +18,17 @@ export default function PWAUpdatePrompt() {
     setNeedRefresh(false)
   }
 
+  const applyUpdate = async () => {
+    setUpdating(true)
+    try {
+      await updateServiceWorker(true)
+    } catch {
+      setUpdating(false)
+    }
+  }
+
   return (
-    <aside className="pwa-notice" role="status" aria-live="polite">
+    <aside className="pwa-notice" role="status" aria-live="polite" aria-busy={updating}>
       <span className="pwa-notice-icon">
         {offlineReady ? <Check size={17} /> : <Download size={17} />}
       </span>
@@ -33,9 +44,10 @@ export default function PWAUpdatePrompt() {
         <button
           className="pwa-notice-action"
           type="button"
-          onClick={() => void updateServiceWorker(true)}
+          onClick={() => void applyUpdate()}
+          disabled={updating}
         >
-          Update
+          {updating ? 'Updating…' : 'Update'}
         </button>
       )}
       <button
